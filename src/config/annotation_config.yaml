@@ -1,0 +1,23 @@
+scenario_reality:
+  label: "Does the scenario conform to reality?"
+  options:
+    - "Conform"
+    - "Delete"
+    - "Modify"
+  editable_option: "Modify"
+
+question1:
+  label: "Question 1: Please review the following aspects and their points."
+  options:
+    - "Conform"
+    - "Delete"
+    - "Modify"
+  editable_option: "Modify"
+
+question2:
+  label: "Question 2: Please analyze the following four situations."
+  options:
+    - "Correct"
+    - "Delete this case"
+    - "Wrong"
+  editable_option: "Wrong"
