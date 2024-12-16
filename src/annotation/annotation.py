@@ -76,6 +76,15 @@ class AnnotationApp:
         if st.session_state.current_index < len(st.session_state.data) - 1:
             st.session_state.current_index += 1
 
+    def provide_download(data, filename="new_QA_annotation.json"):
+        json_data = json.dumps(data, indent=4)  # Convert data to JSON string
+        st.download_button(
+            label="Download JSON File",
+            data=json_data,
+            file_name=filename,
+            mime="application/json"
+        )
+
     def display_annotation_interface(self, data, current_index, show_image=False):
         self.initialize_annotation_state(current_index)
         item = data[current_index]
@@ -419,6 +428,7 @@ class AnnotationApp:
             st.button("Previous", on_click=self.go_previous)
         with next_col:
             st.button("Next", on_click=self.go_next)
+        self.provide_download(data)
 
     def display_overall_status(self, data):
         st.sidebar.subheader("Overall Status of Annotations:")
