@@ -76,7 +76,7 @@ class AnnotationApp:
         if st.session_state.current_index < len(st.session_state.data) - 1:
             st.session_state.current_index += 1
 
-    def provide_download(data, filename="new_QA_annotation.json"):
+    def provide_download(self, data, filename="new_QA_annotation.json"):
         json_data = json.dumps(data, indent=4)  # Convert data to JSON string
         st.download_button(
             label="Download JSON File",
