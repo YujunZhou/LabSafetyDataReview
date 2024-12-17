@@ -164,12 +164,18 @@ class AnnotationApp:
                 data[current_index]['scenario_reality_modified'] = modified_text
                 self.save_annotations(data, st.session_state.annotation_filepath)
             st.text_area(
-                "Modify the scenario:",
+                "Any comments on the scenario:",
                 value=st.session_state[scenario_mod_key],
                 key=scenario_mod_key,
                 on_change=update_scenario_mod
             )
 
+        st.markdown('''**When to Use "Delete"**
+               - Completely unrealistic or illogical.  
+               - Lacks essential details or context.  
+               - Contains inherent contradictions.  
+               - Hard to modify.
+            ''')
         st.markdown("**(If you choose to delete this scenario, you can directly jump to the next page.)**")
 
 
@@ -179,6 +185,13 @@ class AnnotationApp:
         st.markdown(f"### {q1_cfg.get('label', 'Question 1')}")
         q1_options = q1_cfg.get('options', [])
         q1_edit_option = q1_cfg.get('editable_option', None)
+
+        st.markdown('''**When to Use "Delete"**
+           - Redundant or repetitive issues.  
+           - Irrelevant to the scenario.  
+           - Vague and non-specific.  
+           - Hard to modify or cannot guarantee correctness.
+                    ''')
 
         lab_issues = item.get('LabSafetyRelatedIssues', {})
         aspects_keys = [
@@ -258,7 +271,7 @@ class AnnotationApp:
 
                 # print(st.session_state[point_choice_key])
                 st.radio(
-                    f"Aspect {a_idx + 1}, Point {p_idx + 1}",
+                    f"{aspect_name}, Point {p_idx + 1}",
                     q1_options,
                     index=0,
                     key=point_choice_keys[a_idx][p_idx],
@@ -278,7 +291,7 @@ class AnnotationApp:
                         return update_point_mod
 
                     st.text_area(
-                        f"Modify {aspect_name}, Point {p_idx+1}:",
+                        f"Comments on {aspect_name}, Point {p_idx+1}:",
                         value=st.session_state[point_mod_keys[a_idx][p_idx]],
                         key=point_mod_keys[a_idx][p_idx],
                         on_change=make_update_point_mod(a_idx, p_idx)
@@ -289,7 +302,7 @@ class AnnotationApp:
             if missing_items_keys[a_idx] not in st.session_state:
                 st.session_state[missing_items_keys[a_idx]] = ""
 
-            st.markdown("**Missing Items (Add new points line by line):**")
+            st.markdown(f"**Missing Points for {aspect_name} (Add new points line by line):**")
             st.text_area(
                 "Add Missing Points:",
                 value=st.session_state[missing_items_keys[a_idx]],
@@ -329,6 +342,12 @@ class AnnotationApp:
         q2_options = q2_cfg.get('options', [])
         q2_edit_option = q2_cfg.get('editable_option', None)
 
+        st.markdown('''**When to Use "Delete"**
+                   - Illogical or nonsensical actions.
+                   - No meaningful or hard to modify consequence or impact.
+                   - Hard to guarantee the correctness of the consequence.
+                            ''')
+
         option_consequences = item.get('OptionConsequences', {})
         if 'question2_situations' not in data[current_index]:
             data[current_index]['question2_situations'] = []
@@ -336,7 +355,7 @@ class AnnotationApp:
                 if opt_key in option_consequences:
                     desc = option_consequences[opt_key].get('Description', '')
                     cons = option_consequences[opt_key].get('Consequence', '')
-                    full_text = f"Option {opt_key}: {desc}\n\nConsequence: {cons}"
+                    full_text = f"Action {opt_key}: {desc}\n\nConsequence: {cons}"
                     data[current_index]['question2_situations'].append({
                         "option_key": opt_key,
                         "original_text": full_text,
@@ -378,7 +397,7 @@ class AnnotationApp:
                 return update_situation_choice
 
             st.radio(
-                f"Situation {s_idx+1}",
+                f"Action {s_idx+1}",
                 q2_options,
                 index=0,
                 key=situation_choice_keys[s_idx],
@@ -395,7 +414,7 @@ class AnnotationApp:
 
                     return update_situation_mod
                 st.text_area(
-                    f"Modify Concequence of Option {options[s_idx]}:",
+                    f"Comments on Concequence of Option {options[s_idx]}:",
                     value=st.session_state[situation_mod_keys[s_idx]],
                     key=situation_mod_keys[s_idx],
                     on_change=make_update_situation_mod(s_idx)
@@ -414,7 +433,7 @@ class AnnotationApp:
             if f"feedback_textarea_{current_index}" not in st.session_state:
                 st.session_state[f"feedback_textarea_{current_index}"] = item.get('feedback', "")
 
-            st.subheader("Feedback:")
+            st.subheader("Overall Feedback:")
             st.text_area(
                 "feedback",
                 value=st.session_state[f"feedback_textarea_{current_index}"],
@@ -445,7 +464,7 @@ class AnnotationApp:
     def run(self):
         self.load_css()
         st.sidebar.title("Navigation")
-        page = st.sidebar.selectbox("Go to", ["Configuration", "Text Annotation Platform"], label_visibility="collapsed")
+        page = st.sidebar.selectbox("Go to", ["Configuration", "Lab Safety Data Review Platform"], label_visibility="collapsed")
 
         if page == "Configuration":
             st.title("Configuration Page")
@@ -463,8 +482,8 @@ class AnnotationApp:
                     self.initialize_annotation_state(i)
                 st.success("All keys are considered selected. Proceed to the annotation platforms.")
 
-        elif page == "Text Annotation Platform":
-            st.title("Text Annotation Platform")
+        elif page == "Lab Safety Data Review Platform":
+            st.title("Lab Safety Data Review Platform (First Phase)")
             # No longer checking for selected keys
             if st.session_state.data:
                 data = st.session_state.data
