@@ -76,6 +76,7 @@ class AnnotationApp:
         if st.session_state.current_index < len(st.session_state.data) - 1:
             st.session_state.current_index += 1
 
+    # Create a downloadable version of the file
     def provide_download(self, data, filename="new_QA_annotation.json"):
         json_data = json.dumps(data, indent=4)  # Convert data to JSON string
         st.download_button(
@@ -168,6 +169,8 @@ class AnnotationApp:
                 key=scenario_mod_key,
                 on_change=update_scenario_mod
             )
+
+        st.markdown("**(If you choose to delete this scenario, you can directly jump to the next page.)**")
 
 
         st.markdown("---")
@@ -322,6 +325,8 @@ class AnnotationApp:
 
         # Question 2
         st.markdown(f"### {q2_cfg.get('label', 'Question 2')}")
+        st.write('Original Scenario:')
+        st.write(scenario_desc)
         q2_options = q2_cfg.get('options', [])
         q2_edit_option = q2_cfg.get('editable_option', None)
 
@@ -428,6 +433,7 @@ class AnnotationApp:
             st.button("Previous", on_click=self.go_previous)
         with next_col:
             st.button("Next", on_click=self.go_next)
+
         self.provide_download(data)
 
     def display_overall_status(self, data):
