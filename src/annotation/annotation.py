@@ -271,7 +271,7 @@ class AnnotationApp:
 
                 # print(st.session_state[point_choice_key])
                 st.radio(
-                    f"{aspect_name}, Point {p_idx + 1}",
+                    f"{aspects_shown[a_idx]}, Point {p_idx + 1}",
                     q1_options,
                     index=0,
                     key=point_choice_keys[a_idx][p_idx],
@@ -291,7 +291,7 @@ class AnnotationApp:
                         return update_point_mod
 
                     st.text_area(
-                        f"Comments on {aspect_name}, Point {p_idx+1}:",
+                        f"Comments on {aspects_shown[a_idx]}, Point {p_idx+1}:",
                         value=st.session_state[point_mod_keys[a_idx][p_idx]],
                         key=point_mod_keys[a_idx][p_idx],
                         on_change=make_update_point_mod(a_idx, p_idx)
@@ -302,7 +302,7 @@ class AnnotationApp:
             if missing_items_keys[a_idx] not in st.session_state:
                 st.session_state[missing_items_keys[a_idx]] = ""
 
-            st.markdown(f"**Missing Points for {aspect_name} (Add new points line by line):**")
+            st.markdown(f"**Missing Points for {aspects_shown[a_idx]} (Add new points line by line):**")
             st.text_area(
                 "Add Missing Points:",
                 value=st.session_state[missing_items_keys[a_idx]],
