@@ -153,7 +153,7 @@ class AnnotationApp:
         st.radio(
             "Scenario Reality Options",
             scenario_options,
-            index=None,
+            index=0,
             key=scenario_key,
             on_change=update_scenario_choice
         )
@@ -260,7 +260,7 @@ class AnnotationApp:
                 st.radio(
                     f"Aspect {a_idx + 1}, Point {p_idx + 1}",
                     q1_options,
-                    index=None,
+                    index=0,
                     key=point_choice_keys[a_idx][p_idx],
                     on_change=make_update_point_choice(a_idx, p_idx),
                     label_visibility="collapsed"
@@ -380,7 +380,7 @@ class AnnotationApp:
             st.radio(
                 f"Situation {s_idx+1}",
                 q2_options,
-                index=None,
+                index=0,
                 key=situation_choice_keys[s_idx],
                 on_change=make_update_situation_choice(s_idx),
                 label_visibility="collapsed"
