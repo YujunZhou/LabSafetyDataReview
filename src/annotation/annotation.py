@@ -171,7 +171,6 @@ class AnnotationApp:
             )
 
         st.markdown('''#### **When to Use "Delete"**
-        
                - Completely unrealistic or illogical.  
                - Lacks essential details or context.  
                - Contains inherent contradictions.  
@@ -188,7 +187,6 @@ class AnnotationApp:
         q1_edit_option = q1_cfg.get('editable_option', None)
 
         st.markdown('''#### **When to Use "Delete"**
-        
            - Redundant or repetitive issues.  
            - Irrelevant to the scenario.  
            - Vague and non-specific.  
@@ -348,6 +346,7 @@ class AnnotationApp:
    - Illogical or nonsensical actions.  
    - Redundant outcomes.  
    - No meaningful consequence or impact.  
+   - Hard to modify or cannot guarantee correctness of the consequence.
 ''')
 
         option_consequences = item.get('OptionConsequences', {})
