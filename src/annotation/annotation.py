@@ -170,7 +170,7 @@ class AnnotationApp:
                 on_change=update_scenario_mod
             )
 
-        st.markdown('''**When to Use "Delete"**
+        st.markdown('''#### **When to Use "Delete"**
         
                - Completely unrealistic or illogical.  
                - Lacks essential details or context.  
@@ -187,7 +187,7 @@ class AnnotationApp:
         q1_options = q1_cfg.get('options', [])
         q1_edit_option = q1_cfg.get('editable_option', None)
 
-        st.markdown('''**When to Use "Delete"**
+        st.markdown('''#### **When to Use "Delete"**
         
            - Redundant or repetitive issues.  
            - Irrelevant to the scenario.  
@@ -344,12 +344,11 @@ class AnnotationApp:
         q2_options = q2_cfg.get('options', [])
         q2_edit_option = q2_cfg.get('editable_option', None)
 
-        st.markdown('''**When to Use "Delete"**
-
-           - Illogical or nonsensical actions.
-           - No meaningful or hard to modify consequence or impact.
-           - Hard to guarantee the correctness of the consequence.
-           ''')
+        st.markdown('''#### **When to Use "Delete"**
+   - Illogical or nonsensical actions.  
+   - Redundant outcomes.  
+   - No meaningful consequence or impact.  
+''')
 
         option_consequences = item.get('OptionConsequences', {})
         if 'question2_situations' not in data[current_index]:
