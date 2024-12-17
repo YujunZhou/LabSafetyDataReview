@@ -170,11 +170,11 @@ class AnnotationApp:
                 on_change=update_scenario_mod
             )
 
-        st.markdown('''#### **When to Use "Delete"**
-    - Completely unrealistic or illogical.  
-    - Lacks essential details or context.  
-    - Contains inherent contradictions.  
-    - Hard to modify.
+        st.markdown('''### **When to Use "Delete"**
+   - Completely unrealistic or illogical.  
+   - Lacks essential details or context.  
+   - Contains inherent contradictions.  
+   - Hard to modify.
             ''')
         st.markdown("**(If you choose to delete this scenario, you can directly jump to the next page.)**")
 
@@ -186,12 +186,12 @@ class AnnotationApp:
         q1_options = q1_cfg.get('options', [])
         q1_edit_option = q1_cfg.get('editable_option', None)
 
-        st.markdown('''#### **When to Use "Delete"**
-    - Redundant or repetitive issues.  
-    - Irrelevant to the scenario.  
-    - Vague and non-specific.  
-    - Hard to modify or cannot guarantee correctness.
-                    ''')
+        st.markdown('''### **When to Use "Delete"**
+   - Redundant or repetitive issues.  
+   - Irrelevant to the scenario.  
+   - Vague and non-specific.  
+   - Hard to modify or cannot guarantee correctness.
+''')
 
         lab_issues = item.get('LabSafetyRelatedIssues', {})
         aspects_keys = [
