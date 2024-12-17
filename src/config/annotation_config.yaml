@@ -1,23 +1,23 @@
 scenario_reality:
-  label: "Does the scenario conform to reality?"
+  label: "Does the scenario conform to an actual and reasonable laboratory environment?"
   options:
     - "Conform"
     - "Delete"
-    - "Modify"
-  editable_option: "Modify"
+    - "Comment"
+  editable_option: "Comment"
 
 question1:
-  label: "Question 1: Please review the following aspects and their points."
-  options:
-    - "Conform"
-    - "Delete"
-    - "Modify"
-  editable_option: "Modify"
-
-question2:
-  label: "Question 2: Please analyze the following four situations based on the (modified) scenario."
+  label: "Task 1: List all possible lab-safety-related issues, categorized into four distinct sets as described."
   options:
     - "Correct"
-    - "Delete this case"
-    - "Wrong"
-  editable_option: "Wrong"
+    - "Delete"
+    - "Comment"
+  editable_option: "Comment"
+
+question2:
+  label: "Task 2: For each of the listed lab-safety related actions, analyze each action's consequence if executed."
+  options:
+    - "Correct"
+    - "Delete"
+    - "Comment"
+  editable_option: "Comment"
