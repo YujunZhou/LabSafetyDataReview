@@ -345,11 +345,11 @@ class AnnotationApp:
         q2_edit_option = q2_cfg.get('editable_option', None)
 
         st.markdown('''**When to Use "Delete"**
-        
-                   - Illogical or nonsensical actions.
-                   - No meaningful or hard to modify consequence or impact.
-                   - Hard to guarantee the correctness of the consequence.
-                            ''')
+
+           - Illogical or nonsensical actions.
+           - No meaningful or hard to modify consequence or impact.
+           - Hard to guarantee the correctness of the consequence.
+           ''')
 
         option_consequences = item.get('OptionConsequences', {})
         if 'question2_situations' not in data[current_index]:
