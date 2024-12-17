@@ -15,7 +15,7 @@ question1:
   editable_option: "Modify"
 
 question2:
-  label: "Question 2: Please analyze the following four situations."
+  label: "Question 2: Please analyze the following four situations based on the (modified) scenario."
   options:
     - "Correct"
     - "Delete this case"
