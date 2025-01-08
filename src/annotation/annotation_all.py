@@ -243,7 +243,13 @@ class AnnotationApp:
         # ④ 把 JSON 字符串转换成二进制
         data_bytes = json_data.encode("utf-8")  # 如果真的是纯ASCII，也没问题
 
-        res = requests.put(url, data=data_bytes, headers=headers)
+        file_name = 'temp.txt'
+        with open(file_name, 'w') as f:
+            f.write('sdddddddddd')
+        with open(file_name, 'rb') as f:
+            data_bytes = f.read()
+
+        res = requests.put(url, data=data_bytes, auth=(username, password))
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
