@@ -229,6 +229,7 @@ class AnnotationApp:
         # ① 构造自定义 Basic Auth，UTF-8 -> base64
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
+        print(username, password)
 
         url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
         res = requests.put(url, data=json_data, auth=(username, password))
