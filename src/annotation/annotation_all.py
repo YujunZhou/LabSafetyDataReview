@@ -229,20 +229,21 @@ class AnnotationApp:
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
 
-        url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
-
-        # 1) 自己构造 "username:password" 并用 UTF-8 编码
+        # 1) 生成 Authorization 头（UTF-8 -> base64）
         auth_bytes = f"{username}:{password}".encode("utf-8")
-        # 2) 再做 Base64
         auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
-
-        # 3) 放到请求头
         headers = {
-            "Authorization": f"Basic {auth_b64}"
+            "Authorization": f"Basic {auth_b64}",
+            "Content-Type": "application/json; charset=utf-8",
         }
 
-        # 4) 直接传入 headers，不要再用 `auth=(...)`
-        res = requests.put(url, data=json_data, headers=headers)
+        # 2) 准备上传的数据 (UTF-8 bytes)
+        payload = json_data.encode("utf-8")
+
+        # 3) 构造 WebDAV 路径
+        url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
+
+        res = requests.put(url, data=payload, headers=headers)
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
