@@ -7,6 +7,7 @@ import os
 from streamlit_scroll_to_top import scroll_to_here
 import openai
 import requests
+import base64
 
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 class AnnotationApp:
@@ -104,20 +105,24 @@ class AnnotationApp:
             remote_filename = 'LabSafety/' + os.path.basename(local_path)
             self.upload_to_jianguoyun(json_data, remote_filename)
 
-    def upload_to_jianguoyun(self, json_data, remote_filename: str):
-        """
-        把 local_path 这个本地文件上传到坚果云的根目录，命名为 remote_filename
-        """
-        # 从 Secrets 中拿到用户名、密码
+    def upload_to_jianguoyun(json_data, remote_filename: str):
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
 
-
-        # 拼接目标 URL （根目录下存放 remote_filename）
         url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
 
-        # 使用 requests.put() + Basic Auth 方式
-        res = requests.put(url, data=json_data, auth=(username, password))
+        # 1) 自己构造 "username:password" 并用 UTF-8 编码
+        auth_bytes = f"{username}:{password}".encode("utf-8")
+        # 2) 再做 Base64
+        auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
+
+        # 3) 放到请求头
+        headers = {
+            "Authorization": f"Basic {auth_b64}"
+        }
+
+        # 4) 直接传入 headers，不要再用 `auth=(...)`
+        res = requests.put(url, data=json_data, headers=headers)
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
