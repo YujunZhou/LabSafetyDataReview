@@ -105,7 +105,7 @@ class AnnotationApp:
             remote_filename = 'LabSafety/' + os.path.basename(local_path)
             self.upload_to_jianguoyun(json_data, remote_filename)
 
-    def upload_to_jianguoyun(json_data, remote_filename: str):
+    def upload_to_jianguoyun(self, json_data, remote_filename: str):
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
 
