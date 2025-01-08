@@ -229,27 +229,9 @@ class AnnotationApp:
         # ① 构造自定义 Basic Auth，UTF-8 -> base64
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
-        auth_b64 = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("utf-8")
 
-        # ② 只用 "application/octet-stream" 避免服务器把它当文本解析
-        headers = {
-            "Authorization": f"Basic {auth_b64}",
-            "Content-Type": "application/octet-stream",
-        }
-
-        # ③ 假设 remote_filename 里无中文或特殊符号
         url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
-
-        # ④ 把 JSON 字符串转换成二进制
-        data_bytes = json_data.encode("utf-8")  # 如果真的是纯ASCII，也没问题
-
-        file_name = 'temp.txt'
-        with open(file_name, 'w') as f:
-            f.write('sdddddddddd')
-        with open(file_name, 'rb') as f:
-            data_bytes = f.read()
-
-        res = requests.put(url, data=data_bytes, headers=headers)
+        res = requests.put(url, data=json_data, auth=(username, password))
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
