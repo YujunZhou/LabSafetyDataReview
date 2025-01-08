@@ -104,7 +104,7 @@ class AnnotationApp:
             remote_filename = 'LabSafety/' + os.path.basename(local_path)
             self.upload_to_jianguoyun(local_path, remote_filename)
 
-    def upload_to_jianguoyun(local_path: str, remote_filename: str):
+    def upload_to_jianguoyun(self, local_path: str, remote_filename: str):
         """
         把 local_path 这个本地文件上传到坚果云的根目录，命名为 remote_filename
         """
