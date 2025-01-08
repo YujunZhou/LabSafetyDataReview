@@ -249,7 +249,7 @@ class AnnotationApp:
         with open(file_name, 'rb') as f:
             data_bytes = f.read()
 
-        res = requests.put(url, data=data_bytes, auth=(username, password))
+        res = requests.put(url, data=data_bytes, headers=headers)
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
