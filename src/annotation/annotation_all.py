@@ -102,9 +102,9 @@ class AnnotationApp:
         ):
             local_path = st.session_state.annotation_filepath  # 假设这里是你保存的 JSON 文件路径
             remote_filename = 'LabSafety/' + os.path.basename(local_path)
-            self.upload_to_jianguoyun(local_path, remote_filename)
+            self.upload_to_jianguoyun(json_data, remote_filename)
 
-    def upload_to_jianguoyun(self, local_path: str, remote_filename: str):
+    def upload_to_jianguoyun(self, json_data, remote_filename: str):
         """
         把 local_path 这个本地文件上传到坚果云的根目录，命名为 remote_filename
         """
@@ -112,15 +112,12 @@ class AnnotationApp:
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
 
-        # 读取文件内容
-        with open(local_path, "rb") as f:
-            file_content = f.read()
 
         # 拼接目标 URL （根目录下存放 remote_filename）
         url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
 
         # 使用 requests.put() + Basic Auth 方式
-        res = requests.put(url, data=file_content, auth=(username, password))
+        res = requests.put(url, data=json_data, auth=(username, password))
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
