@@ -694,8 +694,7 @@ class AnnotationApp:
                 st.session_state.scroll_to_header = True
                 st.rerun()
 
-        # 下载按钮
-        self.provide_download(data, filename=st.session_state.dataset_name + "_annotation.json")
+
 
 
     def display_overall_status(self, data):
@@ -760,6 +759,9 @@ class AnnotationApp:
 
                 if st.sidebar.button("Show Status"):
                     self.display_overall_status(data)
+
+                # 下载按钮
+                self.provide_download(data, filename=st.session_state.dataset_name + "_annotation.json")
 
 
 if __name__ == "__main__":
