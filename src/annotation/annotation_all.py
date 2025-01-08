@@ -253,15 +253,17 @@ class AnnotationApp:
 
 
         if system_prompt == 'Refine the content:':
+            st.markdown('**GPT-4o API (Sentence Refiner)**')
             user_input = st.text_area(f"Please enter the content you need to refine. (System Prompt: {system_prompt})",
                                       key=key,
                                       )
-            st.markdown('**GPT-4o API (Sentence Refiner)**')
+
         else:
+            st.markdown('**GPT-4o API (Any Requests Here!)**')
             user_input = st.text_area(f"Please enter any task you want GPT to complete. (System Prompt: {system_prompt})",
                                       key=key,
                                       )
-            st.markdown('**GPT-4o API (Any Requests Here!)**')
+
 
         if st.button("Submit", key=key+'_botton'):  # 点击后执行以下操作
             if user_input:
@@ -270,7 +272,7 @@ class AnnotationApp:
                 st.markdown("**The response of GPT：**")
                 st.write(answer)
             else:
-                st.warning("Please enter the content and then click Submit.")
+                st.warning("To use GPT, please enter the content and then click Submit.")
         st.markdown("---")
 
     def display_annotation_interface(self, data, current_index, show_image=False):
@@ -534,12 +536,18 @@ class AnnotationApp:
 
         # -------------------- Question 2 --------------------
         st.markdown(f"### {q2_cfg.get('label', 'Question 2')}")
-        st.write('Original Scenario:')
-        st.write(scenario_desc)
+
         q2_options = q2_cfg.get('options', [])
 
         st.markdown(decision_instruction)
         st.markdown("---")
+
+        st.write('**(Updated) Scenario**:')
+        if data[current_index].get('Scenario_modified', ""):
+            st.write(data[current_index].get('Scenario_modified', ""))
+        else:
+            st.write(scenario_desc)
+        st.markdown('---')
 
         option_consequences = item.get('Decisions', {})
         if 'question2_situations' not in data[current_index]:
