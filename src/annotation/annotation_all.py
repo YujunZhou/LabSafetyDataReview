@@ -6,6 +6,7 @@ from prompts import *
 import os
 from streamlit_scroll_to_top import scroll_to_here
 import openai
+import requests
 
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 class AnnotationApp:
@@ -93,12 +94,37 @@ class AnnotationApp:
     # Create a downloadable version of the file
     def provide_download(self, data, filename="new_QA_annotation.json"):
         json_data = json.dumps(data, indent=4)  # Convert data to JSON string
-        st.download_button(
+        if st.download_button(
             label="Download JSON File",
             data=json_data,
             file_name=filename,
             mime="application/json"
-        )
+        ):
+            local_path = st.session_state.annotation_filepath  # 假设这里是你保存的 JSON 文件路径
+            remote_filename = 'LabSafety/' + os.path.basename(local_path)
+            self.upload_to_jianguoyun(local_path, remote_filename)
+
+    def upload_to_jianguoyun(local_path: str, remote_filename: str):
+        """
+        把 local_path 这个本地文件上传到坚果云的根目录，命名为 remote_filename
+        """
+        # 从 Secrets 中拿到用户名、密码
+        username = st.secrets["nutcloud"]["username"]
+        password = st.secrets["nutcloud"]["password"]
+
+        # 读取文件内容
+        with open(local_path, "rb") as f:
+            file_content = f.read()
+
+        # 拼接目标 URL （根目录下存放 remote_filename）
+        url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
+
+        # 使用 requests.put() + Basic Auth 方式
+        res = requests.put(url, data=file_content, auth=(username, password))
+        if res.status_code in [200, 201, 204]:
+            st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
+        else:
+            st.error(f"Failed Upload: {res.status_code}, {res.text}")
 
     def call_gpt_api(self, user_input: str) -> str:
         client = openai.OpenAI()
@@ -545,7 +571,7 @@ class AnnotationApp:
                 st.session_state.scroll_to_header = True
                 st.rerun()
         # 下载按钮
-        self.provide_download(data)
+        self.provide_download(data, filename=st.session_state.dataset_name + "_annotation.json")
 
     def display_overall_status(self, data):
         st.sidebar.subheader("Overall Status of Annotations:")
