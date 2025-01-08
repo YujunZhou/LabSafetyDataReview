@@ -250,16 +250,18 @@ class AnnotationApp:
 
     def gpt_input(self, key, system_prompt='Refine the content:'):
         st.markdown("---")
-        st.markdown('**GPT-4o API**')
+
 
         if system_prompt == 'Refine the content:':
             user_input = st.text_area(f"Please enter the content you need to refine. (System Prompt: {system_prompt})",
                                       key=key,
                                       )
+            st.markdown('**GPT-4o API (Sentence Refiner)**')
         else:
             user_input = st.text_area(f"Please enter any task you want GPT to complete. (System Prompt: {system_prompt})",
                                       key=key,
                                       )
+            st.markdown('**GPT-4o API (Any Requests Here!)**')
 
         if st.button("Submit", key=key+'_botton'):  # 点击后执行以下操作
             if user_input:
@@ -528,7 +530,7 @@ class AnnotationApp:
 
             self.gpt_input(key=f"aspect_{a_idx}_{current_index}")
 
-        st.markdown("---")
+        # st.markdown("---")
 
         # -------------------- Question 2 --------------------
         st.markdown(f"### {q2_cfg.get('label', 'Question 2')}")
@@ -654,6 +656,7 @@ class AnnotationApp:
                     st.session_state[situation_mod_cons_keys[s_idx]] = ""
                     data[current_index]['question2_situations'][s_idx]['modified_decision'] = ""
                     data[current_index]['question2_situations'][s_idx]['modified_consequence'] = ""
+                self.gpt_input(key=f"situation_{s_idx}_{current_index}")
 
             if data[current_index]['question2_situations'][s_idx].get('modified_decision', ""):
                 st.write("**Modified Decision**:", data[current_index]['question2_situations'][s_idx]['modified_decision'])
@@ -662,9 +665,9 @@ class AnnotationApp:
             if data[current_index]['question2_situations'][s_idx].get('comment', ""):
                 st.write("**Comments**:", data[current_index]['question2_situations'][s_idx]['comment'])
 
-            self.gpt_input(key=f"situation_{s_idx}_{current_index}")
 
-        st.markdown("---")
+
+        self.gpt_input(key=f"overall_{current_index}", system_prompt='You are a helpful assistant.')
 
         prev_col, next_col = st.columns([1, 1])
         with prev_col:
@@ -683,9 +686,9 @@ class AnnotationApp:
                 st.session_state.scroll_to_header = True
                 st.rerun()
 
-        self.gpt_input(key=f"overall_{current_index}", system_prompt='You are a helpful assistant.')
         # 下载按钮
         self.provide_download(data, filename=st.session_state.dataset_name + "_annotation.json")
+
 
     def display_overall_status(self, data):
         st.sidebar.subheader("Overall Status of Annotations:")
