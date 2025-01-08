@@ -7,7 +7,6 @@ import os
 from streamlit_scroll_to_top import scroll_to_here
 import openai
 import requests
-import base64
 
 os.environ['OPENAI_API_KEY'] = st.secrets["OPENAI_API_KEY"]
 
@@ -226,9 +225,9 @@ class AnnotationApp:
             self.upload_to_jianguoyun(json_data, remote_filename)
 
     def upload_to_jianguoyun(self, json_data, remote_filename: str):
-        # ① 构造自定义 Basic Auth，UTF-8 -> base64
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
+
 
         url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
         res = requests.put(url, data=json_data, auth=(username, password))
@@ -250,6 +249,7 @@ class AnnotationApp:
         return response
 
     def gpt_input(self, key, system_prompt='Refine the content:'):
+        st.markdown("---")
         st.markdown('**GPT-4o API**')
 
         if system_prompt == 'Refine the content:':
@@ -269,6 +269,7 @@ class AnnotationApp:
                 st.write(answer)
             else:
                 st.warning("Please enter the content and then click Submit.")
+        st.markdown("---")
 
     def display_annotation_interface(self, data, current_index, show_image=False):
         item = data[current_index]
