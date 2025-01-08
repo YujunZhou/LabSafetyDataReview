@@ -2,3 +2,4 @@ streamlit
 pyyaml
 openai
 streamlit_scroll_to_top
+requests
