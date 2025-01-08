@@ -233,6 +233,7 @@ class AnnotationApp:
         res = requests.put(url, data=json_data, auth=(username, password))
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
+            st.sidebar.write("**Successfully saved!**")
         else:
             st.error(f"Failed Upload: {res.status_code}, {res.text}")
 
