@@ -214,7 +214,7 @@ class AnnotationApp:
     # Create a downloadable version of the file
     def provide_download(self, data, filename="new_QA_annotation.json"):
         json_data = json.dumps(data, indent=4)  # Convert data to JSON string
-        if st.download_button(
+        if st.sidebar.download_button(
             label="Download JSON File",
             data=json_data,
             file_name=filename,
