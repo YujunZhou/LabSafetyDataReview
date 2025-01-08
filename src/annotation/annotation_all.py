@@ -226,24 +226,24 @@ class AnnotationApp:
             self.upload_to_jianguoyun(json_data, remote_filename)
 
     def upload_to_jianguoyun(self, json_data, remote_filename: str):
+        # ① 构造自定义 Basic Auth，UTF-8 -> base64
         username = st.secrets["nutcloud"]["username"]
         password = st.secrets["nutcloud"]["password"]
+        auth_b64 = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("utf-8")
 
-        # 1) 生成 Authorization 头（UTF-8 -> base64）
-        auth_bytes = f"{username}:{password}".encode("utf-8")
-        auth_b64 = base64.b64encode(auth_bytes).decode("utf-8")
+        # ② 只用 "application/octet-stream" 避免服务器把它当文本解析
         headers = {
             "Authorization": f"Basic {auth_b64}",
-            "Content-Type": "application/json; charset=utf-8",
+            "Content-Type": "application/octet-stream",
         }
 
-        # 2) 准备上传的数据 (UTF-8 bytes)
-        payload = json_data.encode("utf-8")
-
-        # 3) 构造 WebDAV 路径
+        # ③ 假设 remote_filename 里无中文或特殊符号
         url = f"https://dav.jianguoyun.com/dav/{remote_filename}"
 
-        res = requests.put(url, data=payload, headers=headers)
+        # ④ 把 JSON 字符串转换成二进制
+        data_bytes = json_data.encode("utf-8")  # 如果真的是纯ASCII，也没问题
+
+        res = requests.put(url, data=data_bytes, headers=headers)
         if res.status_code in [200, 201, 204]:
             st.success(f"Successfully saved to Jianguoyun: {remote_filename}")
         else:
