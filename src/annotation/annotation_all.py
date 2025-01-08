@@ -249,29 +249,29 @@ class AnnotationApp:
         else:
             st.error(f"Failed Upload: {res.status_code}, {res.text}")
 
-    def call_gpt_api(self, user_input: str) -> str:
+    def call_gpt_api(self, user_input: str, system_prompt='Refine the content:') -> str:
         client = openai.OpenAI()
         response = client.chat.completions.create(
             model='gpt-4o-2024-11-20',
             messages=[
-                {"role": "system", "content": '''You are a lab safety expert. If the user does not specify a task, your role is to professionally refine and enhance their words while ensuring clarity and precision in the context of lab safety. If the user specifies a task, directly address their request with clear, accurate, and expert-level guidance related to lab safety. Ensure all responses adhere to best practices and standards in laboratory safety.'''},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_input}
             ],
             temperature=0.7
         ).choices[0].message.content
         return response
 
-    def gpt_input(self, key):
+    def gpt_input(self, key, system_prompt='Refine the content:'):
         st.markdown('**GPT-4o API**')
-        user_input = st.text_area("Please enter the content you need to refine or the task you want GPT to complete.",
+
+        user_input = st.text_area(f"Please enter the content you need to refine or the task you want GPT to complete. (System Prompt: {system_prompt})",
                                   key=key,
                                   )
-
 
         if st.button("Submit", key=key+'_botton'):  # 点击后执行以下操作
             if user_input:
                 with st.spinner("GPT generating..."):
-                    answer = self.call_gpt_api(user_input)
+                    answer = self.call_gpt_api(user_input, system_prompt)
                 st.markdown("**The response of GPT：**")
                 st.write(answer)
             else:
@@ -693,6 +693,8 @@ class AnnotationApp:
 
                 st.session_state.scroll_to_header = True
                 st.rerun()
+
+        self.gpt_input(key=f"overall_{current_index}", system_prompt='You are a helpful assistant.')
         # 下载按钮
         self.provide_download(data, filename=st.session_state.dataset_name + "_annotation.json")
 
