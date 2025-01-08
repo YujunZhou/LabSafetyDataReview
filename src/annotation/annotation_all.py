@@ -264,9 +264,14 @@ class AnnotationApp:
     def gpt_input(self, key, system_prompt='Refine the content:'):
         st.markdown('**GPT-4o API**')
 
-        user_input = st.text_area(f"Please enter the content you need to refine or the task you want GPT to complete. (System Prompt: {system_prompt})",
-                                  key=key,
-                                  )
+        if system_prompt == 'Refine the content:':
+            user_input = st.text_area(f"Please enter the content you need to refine. (System Prompt: {system_prompt})",
+                                      key=key,
+                                      )
+        else:
+            user_input = st.text_area(f"Please enter any task you want GPT to complete. (System Prompt: {system_prompt})",
+                                      key=key,
+                                      )
 
         if st.button("Submit", key=key+'_botton'):  # 点击后执行以下操作
             if user_input:
