@@ -349,9 +349,9 @@ class AnnotationApp:
                 data[current_index]['Scenario_modified'] = ""
             self.gpt_input(key=f"scenario_{current_index}")
         if data[current_index].get('Scenario_modified', ""):
-            st.write("Modified Scenario:", data[current_index].get('Scenario_modified', ""))
+            st.write("**Modified Scenario**:", data[current_index].get('Scenario_modified', ""))
         if data[current_index].get('Scenario_comment', ""):
-            st.write("Comments:", data[current_index].get('Scenario_comment', ""))
+            st.write("**Comments**:", data[current_index].get('Scenario_comment', ""))
 
 
         st.markdown("**(If you choose to delete this scenario, you can directly jump to the next page.)**")
@@ -425,11 +425,6 @@ class AnnotationApp:
                 self.ensure_session_state_key(point_comment_keys[a_idx][p_idx], point_info.get('comment', ""))
 
                 st.write(point_text)
-                if point_info.get('modified_text', ""):
-                    st.write("Modified Point:", point_info['modified_text'])
-                if point_info.get('comment', ""):
-                    st.write("Comments:", point_info['comment'])
-
 
                 # 如果当前 choice 不在可选项内，重置为第一个选项
                 if st.session_state[point_choice_keys[a_idx][p_idx]] not in q1_options and len(q1_options) > 0:
@@ -495,9 +490,9 @@ class AnnotationApp:
                         data[current_index]['question1_aspects'][a_idx]['points'][p_idx]['modified_text'] = ""
 
                 if data[current_index]['question1_aspects'][a_idx]['points'][p_idx].get('modified_text', ""):
-                    st.write("Modified Point:", data[current_index]['question1_aspects'][a_idx]['points'][p_idx]['modified_text'])
+                    st.write("**Modified Point**:", data[current_index]['question1_aspects'][a_idx]['points'][p_idx]['modified_text'])
                 if data[current_index]['question1_aspects'][a_idx]['points'][p_idx].get('comment', ""):
-                    st.write("Comments:", data[current_index]['question1_aspects'][a_idx]['points'][p_idx]['comment'])
+                    st.write("**Comments**:", data[current_index]['question1_aspects'][a_idx]['points'][p_idx]['comment'])
 
             # 显示添加缺失点的 text_area
             self.ensure_session_state_key(missing_items_keys[a_idx], "")
@@ -661,11 +656,11 @@ class AnnotationApp:
                     data[current_index]['question2_situations'][s_idx]['modified_consequence'] = ""
 
             if data[current_index]['question2_situations'][s_idx].get('modified_decision', ""):
-                st.write("Modified Decision:", data[current_index]['question2_situations'][s_idx]['modified_decision'])
+                st.write("**Modified Decision**:", data[current_index]['question2_situations'][s_idx]['modified_decision'])
             if data[current_index]['question2_situations'][s_idx].get('modified_consequence', ""):
-                st.write("Modified Consequence:", data[current_index]['question2_situations'][s_idx]['modified_consequence'])
+                st.write("**Modified Consequence**:", data[current_index]['question2_situations'][s_idx]['modified_consequence'])
             if data[current_index]['question2_situations'][s_idx].get('comment', ""):
-                st.write("Comments:", data[current_index]['question2_situations'][s_idx]['comment'])
+                st.write("**Comments**:", data[current_index]['question2_situations'][s_idx]['comment'])
 
             self.gpt_input(key=f"situation_{s_idx}_{current_index}")
 
