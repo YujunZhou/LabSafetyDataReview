@@ -1,4 +1,4 @@
-Scenario:
+scenario_reality:
   label: "Does the scenario conform to an actual and reasonable laboratory environment?"
   options:
     - "Conform"
