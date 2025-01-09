@@ -29,7 +29,7 @@ class AnnotationApp:
                 st.markdown(f'<style>{css_content}</style>', unsafe_allow_html=True)
 
     def load_config(self):
-        with open("src/config/annotation_config.yaml", "r") as file:
+        with open("src/config/annotation_config_1.yaml", "r") as file:
             config = yaml.safe_load(file)
         return config
 
