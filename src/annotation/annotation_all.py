@@ -30,20 +30,20 @@ Your task is to review and evaluate each **scenario** generated using the provid
    - Select this option if the scenario is realistic, meaningful, and aligns appropriately with the laboratory setting described in the question.
 
 2. **Delete**:
-   - Choose this option if the scenario:
+   - Select this option if the scenario:
      - Is illogical or nonsensical.
      - Is overly similar to a previously presented scenario.
      - Lacks essential details or context to make it plausible.
      - Contains inherent contradictions or inconsistencies.
 
 3. **Modify**:
-   - Select this option if the scenario requires refinement.
+   - Select this option if the scenario requires refinement. Specifically, you must:
      - Provide the revised **Scenario** in the input box.
      - Ensure your language is formal and professional, as your changes will directly reflect in the revised question.
-     - To refine your input further, you can use the GPT-4o API integrated into the system. Enter your draft or instructions for refinement, and you’ll receive a polished result within seconds. However, do not entirely rely on GPT for complex or specialized knowledge—ensure professional accuracy in your edits.
+     - To refine your input further, you need to use the GPT-4o API integrated into the system. Enter your draft or instructions for refinement, and you’ll receive a polished result within seconds. However, do not entirely rely on GPT for complex or specialized knowledge—ensure professional accuracy in your edits.
 
 4. **Comment**:
-   - If you remain uncertain after consulting relevant resources, select this option.
+   - Select this option if you remain uncertain after consulting relevant resources.
    - Provide detailed concerns or questions regarding the scenario to guide further review or discussion.'''
 
 issues_instruction = '''**Task for Experts**
@@ -72,35 +72,35 @@ Your task is to review and evaluate the **lab-safety-related issues** identified
    - Select this option if the identified lab-safety issue is accurate, relevant to the scenario, and correctly categorized.
 
 2. **Delete**:
-   - Choose this option if the issue:
+   - Select this option if the issue:
      - Is a duplicate or overly similar to another issue within the same category.
      - Does not belong to the specified category.
      - Is unrelated to the scenario.
      - Is vague or non-specific.
 
 3. **Modify**:
-   - Select this option if the issue requires refinement.
+   - Select this option if the issue requires refinement. Specifically, you must:
      - Provide the revised **Issue** in the input box.
      - Ensure your language is formal and professional, as your changes will directly reflect in the revised content.
-     - To refine your input further, you can use the GPT-4o API integrated into the system. Enter your draft or instructions for refinement, and you’ll receive a polished result within seconds. However, do not entirely rely on GPT for complex or specialized knowledge—ensure professional accuracy in your edits.
+     - To refine your input further, you need to use the GPT-4o API integrated into the system. Enter your draft or instructions for refinement, and you’ll receive a polished result within seconds. However, do not entirely rely on GPT for complex or specialized knowledge—ensure professional accuracy in your edits.
 
 4. **Comment**:
-   - If you remain uncertain after consulting relevant resources, select this option.
+   - Select this option if you remain uncertain after consulting relevant resources.
    - Provide detailed concerns or questions regarding the issue to guide further review or discussion.
 
 ---
 
-**Additional Task: Add Missing Points**  
+**Additional Input Box: Add Missing Points**  
 - For each category, assess if there are any significant lab-safety issues missing.  
-- Add these missing points in the **Add Missing Points** section. Use clear, concise, and professional language. Refine your inputs using the GPT-4o API if needed.'''
+- Add these missing points in the **Add Missing Points** input box. Use clear, concise, and professional language. You need to refine your inputs using the GPT-4o API.'''
 
 decision_instruction = '''**Task for Experts**
 
 Your task is to review and evaluate each **decision** and its corresponding **consequence** generated using the provided prompt. For each decision, you need to:
 
-1. **Evaluate the Decision's Validity**:
+1. **Evaluate the Decision's and the Consequence's Validity**:
    - Assess whether the decision is meaningful and relevant within the context of laboratory safety.
-   - Determine if the decision logically leads to the stated consequence.
+   - Determine if the decision logically leads to the stated consequence. Ensure they are aligned and coherent.
 
 2. **Ensure Accurate and Informed Judgments**:
    - Consult relevant resources for any uncertainties to ensure your assessments are accurate and thorough.
@@ -249,11 +249,11 @@ class AnnotationApp:
         ).choices[0].message.content
         return response
 
-    def gpt_input(self, key, system_prompt='Refine the content:'):
+    def gpt_input(self, key, system_prompt='Refine the sentences. Please only output the refined content.'):
         st.markdown("---")
 
 
-        if system_prompt == 'Refine the content:':
+        if system_prompt == 'Refine the sentences. Please only output the refined content.':
             st.markdown('**GPT-4o API (Sentence Refiner)**')
             user_input = st.text_area(f"Please enter the content you need to refine. (System Prompt: {system_prompt})",
                                       key=key,
@@ -352,12 +352,13 @@ class AnnotationApp:
                 )
                 st.session_state[scenario_mod_key] = ""
                 data[current_index]['Scenario_modified'] = ""
-            self.gpt_input(key=f"scenario_{current_index}")
+
         if data[current_index].get('Scenario_modified', ""):
             st.write("**Modified Scenario**:", data[current_index].get('Scenario_modified', ""))
         if data[current_index].get('Scenario_comment', ""):
             st.write("**Comments**:", data[current_index].get('Scenario_comment', ""))
-
+        if st.session_state[scenario_key] in ['Modify', 'Comment']:
+            self.gpt_input(key=f"scenario_{current_index}")
 
         st.markdown("**(If you choose to delete this scenario, you can directly jump to the next page.)**")
         st.markdown("---")
@@ -665,7 +666,7 @@ class AnnotationApp:
                     st.session_state[situation_mod_cons_keys[s_idx]] = ""
                     data[current_index]['question2_situations'][s_idx]['modified_decision'] = ""
                     data[current_index]['question2_situations'][s_idx]['modified_consequence'] = ""
-                self.gpt_input(key=f"situation_{s_idx}_{current_index}")
+
 
             if data[current_index]['question2_situations'][s_idx].get('modified_decision', ""):
                 st.write("**Modified Decision**:", data[current_index]['question2_situations'][s_idx]['modified_decision'])
@@ -674,6 +675,8 @@ class AnnotationApp:
             if data[current_index]['question2_situations'][s_idx].get('comment', ""):
                 st.write("**Comments**:", data[current_index]['question2_situations'][s_idx]['comment'])
 
+            if st.session_state[situation_choice_keys[s_idx]] in edit_options:
+                self.gpt_input(key=f"situation_{s_idx}_{current_index}")
 
 
         self.gpt_input(key=f"overall_{current_index}", system_prompt='You are a helpful assistant.')
