@@ -1,0 +1,20 @@
+Scenario:
+  label: "Does the scenario conform to an actual and reasonable laboratory environment?"
+  options:
+    - "Conform"
+    - "Delete"
+    - "Modify"
+
+question1:
+  label: "Task 1: List all possible lab-safety-related issues, categorized into four distinct sets as described."
+  options:
+    - "Correct"
+    - "Delete"
+    - "Modify"
+
+question2:
+  label: "Task 2: For each of the listed lab-safety related decisions, analyze each decision's consequence if executed."
+  options:
+    - "Correct"
+    - "Delete"
+    - "Modify"
