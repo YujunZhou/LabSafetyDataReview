@@ -113,10 +113,12 @@ Your task is to review and evaluate each **decision** and its corresponding **co
 1. **Evaluate the Decision's and the Consequence's Validity**:
    - Assess whether the decision is meaningful and relevant within the context of laboratory safety.
    - Determine if the decision logically leads to the stated consequence. Ensure they are aligned and coherent.
+   - **If previous expert's Comment exists, you MUST prioritize resolving the issues raised in that feedback.**
 
 2. **Ensure Accurate and Informed Judgments**:
    - Consult relevant resources for any uncertainties to ensure your assessments are accurate and thorough.
    - Provide clear and confident conclusions.
+   - **All unresolved uncertainties after consultation must result in deletion.**
 
 ---
 
@@ -126,19 +128,25 @@ Your task is to review and evaluate each **decision** and its corresponding **co
    - Select this option if the decision is meaningful, relevant, and directly leads to the stated consequence as described.
 
 2. **Delete**:
-   - Choose this if the decision is illogical, nonsensical, irrelevant to the scenario, or if it is similar to or duplicates another decision.
+   - Choose this if the decision:
+     - Is illogical, nonsensical, or irrelevant to the scenario
+     - Is similar to or duplicates another decision
+     - **If uncertainty persists after resource consultation**
 
 3. **Modify**:
-   - Use this option if you believe the decision or consequence requires refinement.
-     - Provide the revised **Decision** in the first input box.
-     - Provide the revised **Consequence** in the second input box.
-     - If only one of the two (Decision or Consequence) requires modification, leave the other box empty.
-     - Ensure your language is formal and professional, as your changes will directly reflect in the revised question.
-     - To refine your input further, you can use the GPT-4o API integrated into the system. Enter your draft or instructions for refinement, and you’ll receive a polished result within seconds. However, do not entirely rely on GPT for complex or specialized knowledge—ensure professional accuracy in your edits.
+   - Use this option if you believe the decision or consequence requires refinement:
+     - Provide revised **Decision** in the first input box
+     - Provide revised **Consequence** in the second input box
+     - **Explicitly address all concerns from previous expert's Comment (if provided)**
+     - Maintain causal relationship between decision and consequence
+     - Use GPT-4o API only for language polishing, not domain validation
+     - Never leave partially modified content (clear empty boxes if only modifying one element)
 
-4. **Comment**:
-   - If you remain uncertain after consulting relevant resources, select this option.
-   - Provide detailed concerns or questions regarding the decision or consequence to guide further review or discussion.'''
+### Critical Implementation Notes:
+- The "Comment" option is permanently disabled
+- All ambiguous cases after verification must be deleted
+- Prior expert's Comments constitute binding directives that require full resolution
+'''
 
 
 class AnnotationApp:
